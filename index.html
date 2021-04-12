@@ -1,0 +1,118 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
+    <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Weather Dashboard</h1>
+    </header>
+
+    <main>
+
+        <div id="search-pane">
+            <form id="city-search" class="search">
+                <label for="city-input">City Search: </label>
+                <input id="city-input" type="text" class="search-input border">
+                <button id="search-button" class="border"><i class="fas fa-search"></i></button>
+            </form>
+
+            <form id="recent-searches" class="search">
+                <label for="recent-dropdown">Recent Searches: </label>
+                <select id="recent-dropdown" class="search-input border">
+                    <option></option>
+                    <option></option>
+                </select>
+                <button class="border"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+
+        <div class="flex">
+            <div class="weather-card border">
+                <h2>Current Weather</h2>
+                <hr>
+                <ul>
+                    <li><i class="icon"></i></li>
+                    <li>City Name: <span class="city-name"></span></li>
+                    <li>Date: <span class="date"></span></li>
+                    <li>Temperature: <span class="temperature"></span></li>
+                    <li>Humidity: <span class="humidity"></span></li>
+                    <li>Wind Speed: <span class="wind-speed"></span></li>
+                    <li>UV index: <span class="uv-index"></span></li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="flex">
+            <div id=day-1 class="border weather-card">
+                <ul>
+                    <li><i class="icon"></i></li>
+                    <li>City Name: <span class="city-name"></span></li>
+                    <li>Date: <span class="date"></span></li>
+                    <li>Temperature: <span class="temperature"></span></li>
+                    <li>Humidity: <span class="humidity"></span></li>
+                    <li>Wind Speed: <span class="wind-speed"></span></li>
+                    <li>UV index: <span class="uv-index"></span></li>
+                </ul>
+            </div>
+            <div id=day-2 class="weather-card border">
+                <ul>
+                    <li><i class="icon"></i></li>
+                    <li>City Name: <span class="city-name"></span></li>
+                    <li>Date: <span class="date"></span></li>
+                    <li>Temperature: <span class="temperature"></span></li>
+                    <li>Humidity: <span class="humidity"></span></li>
+                    <li>Wind Speed: <span class="wind-speed"></span></li>
+                    <li>UV index: <span class="uv-index"></span></li>
+                </ul>
+            </div>
+            <div id=day-3 class="weather-card border">
+                <ul>
+                    <li><i class="icon"></i></li>
+                    <li>City Name: <span class="city-name"></span></li>
+                    <li>Date: <span class="date"></span></li>
+                    <li>Temperature: <span class="temperature"></span></li>
+                    <li>Humidity: <span class="humidity"></span></li>
+                    <li>Wind Speed: <span class="wind-speed"></span></li>
+                    <li>UV index: <span class="uv-index"></span></li>
+                </ul>
+            </div>
+            <div id=day-4 class="weather-card border">
+                <ul>
+                    <li><i class="icon"></i></li>
+                    <li>City Name: <span class="city-name"></span></li>
+                    <li>Date: <span class="date"></span></li>
+                    <li>Temperature: <span class="temperature"></span></li>
+                    <li>Humidity: <span class="humidity"></span></li>
+                    <li>Wind Speed: <span class="wind-speed"></span></li>
+                    <li>UV index: <span class="uv-index"></span></li>
+                </ul>
+            </div>
+            <div id=day-5 class="weather-card border">
+                <ul>
+                    <li><i class="icon"></i></li>
+                    <li>City Name: <span class="city-name"></span></li>
+                    <li>Date: <span class="date"></span></li>
+                    <li>Temperature: <span class="temperature"></span></li>
+                    <li>Humidity: <span class="humidity"></span></li>
+                    <li>Wind Speed: <span class="wind-speed"></span></li>
+                    <li>UV index: <span class="uv-index"></span></li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+    <script src="./assets/js/script.js"></script>
+</body>
+
+</html>

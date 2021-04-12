@@ -1,0 +1,100 @@
+/* General Styles */
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    margin: 0px;
+    color: #325D86;
+    border-radius: 5px;
+}
+
+.border {
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px; 
+    border-color: #325D86;
+    box-shadow: 2px 2px 3px 1px rgba(193, 193, 206, 0.6); 
+}
+
+/* Header Styles  */
+
+header {
+    background-color: #E7EBEF;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* Search Pane Styles */
+
+#search-pane {
+    max-width: 500px;
+}
+
+.search{
+    display: flex;
+    margin: 8px;
+}
+
+label {
+    min-width: 125px;
+    padding: 5px;
+}
+
+.search-input {
+    width: 100%;
+}
+
+button {
+    color: #ffffff;
+    background-color: #325D86;
+    margin-left: 5px;
+}
+
+/* Weather Card Styles */
+
+.weather-card {
+    margin: 8px;
+    border-width: 2px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+h2 {
+    margin: 8px;
+    text-align: center;
+}
+
+hr {
+    width: 80%;
+}
+
+ul {
+    list-style: none;
+    padding-inline-start: 0px;
+    margin: 0px;
+}
+
+li {
+    padding: 5px;
+}
+
+
+@media screen and (min-width: 576px){
+
+}
+
+@media screen and (min-width: 768px){
+
+}

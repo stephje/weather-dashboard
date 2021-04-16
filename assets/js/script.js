@@ -1,8 +1,39 @@
+//API key for OpenWeatherMap
 const openWeatherKey = "d8b9c9f29acf75b9bc89cdc565bacf19";
 
-//event listener for the location search button
-var searchButton = document.querySelector("#search-button");
+//Event listener for the location search button
+const searchButton = document.querySelector("#search-button");
 searchButton.addEventListener("click", displayWeatherReport);
+
+//Array to store recent searches in
+var recentSearchArray = [];
+const recentSearchDropdown = document.querySelector("#recent-dropdown");
+
+function getRecentSearches() {
+  //if there is an array in local storage then parse it
+  storedSearches = localStorage.getItem("recentSearches");
+
+  if (storedSearches) {
+    recentSearchArray = JSON.parse(storedSearches);
+    return recentSearchArray;
+  }
+}
+
+function populateRecentSearches() {
+  recentSearchDropdown.innerHTML = "<option>--Select a City--</option>";
+  var recentSearchArray = getRecentSearches();
+
+  //list most recent search at the top
+  for (let i = recentSearchArray.length - 1; i >= 0; i--) {
+    const search = recentSearchArray[i];
+    const newDropdownOption = document.createElement("option");
+    newDropdownOption.setAttribute("id", search);
+    recentSearchDropdown.appendChild(newDropdownOption);
+    newDropdownOption.textContent = search;
+  }
+}
+
+populateRecentSearches();
 
 async function getCityLocation(cityName) {
   //this URL will be used to get the latitude and longitude of the relevant location
@@ -11,6 +42,13 @@ async function getCityLocation(cityName) {
     cityName +
     "&appid=" +
     openWeatherKey;
+
+  //add city name to array of recent searches, stringify and add to local storage
+
+  var recentSearchArray = getRecentSearches();
+  recentSearchArray.push(cityName);
+  localStorage.setItem("recentSearches", JSON.stringify(recentSearchArray));
+  populateRecentSearches();
 
   //fetch the data
   const cityLocationResponse = await fetch(locationQueryURL);

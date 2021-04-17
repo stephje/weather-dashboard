@@ -68,13 +68,8 @@ async function displayWeatherReport(event) {
   //gets the current weather and forecast data
   var weatherForecast = await getWeatherForecast(lat, lon);
 
-  //TESTING DELETE LATER
-  console.log("This is the weather forecast:", weatherForecast);
-
   //Display city name on page
   document.querySelector("#city-name").textContent = cityName.toUpperCase();
-
-  //TO-DO: populate the weather icon somehow
 
   var currentWeatherData = weatherForecast.current;
 
@@ -97,12 +92,14 @@ async function displayWeatherReport(event) {
     const currentWeatherListItem = currentWeatherTextSpans[i].firstElementChild;
     currentWeatherListItem.textContent = weatherDataItems[i];
   }
-
+  
   //Display 5 day forecast
   const weeklyForecast = weatherForecast.daily;
 
+  //populate icons
+  getIcons(weeklyForecast);
+
   for (let i = 1; i < 6; i++) {
-      const dailyWeatherList = document.querySelector(`#day-${i}`);
 
       const forecastData = weeklyForecast[i];
 
@@ -115,7 +112,7 @@ async function displayWeatherReport(event) {
         forecastData.wind_speed,
       ];
 
-      dailyWeatherTextSpans = document.querySelector(`#day-${i}`).children;
+      const dailyWeatherTextSpans = document.querySelector(`#day-${i}`).children;
       for (let i = 0; i < dailyWeatherTextSpans.length; i++) {
         const dailyWeatherListItem = dailyWeatherTextSpans[i].firstElementChild;
         dailyWeatherListItem.textContent = weatherDataItems[i];
@@ -187,8 +184,8 @@ const monthsArray = [
 ];
 
 //convert the date from unix format to a readable format
-function getDate(weatherDataObject) {
-  const rawDate = new Date(weatherDataObject.dt * 1000);
+function getDate(weatherData) {
+  const rawDate = new Date(weatherData.dt * 1000);
   const currentDateValue = rawDate.getDate();
   const currentMonthAsIndex = rawDate.getMonth();
   const currentMonthValue = monthsArray[currentMonthAsIndex];
@@ -196,4 +193,12 @@ function getDate(weatherDataObject) {
   const convertedDate =
     `${currentDateValue} ` + `${currentMonthValue} ` + `${currentYear}`;
   return convertedDate;
+}
+
+function getIcons(weatherData){
+  for (let i = 0; i < 6; i++) {
+    weatherIcon = weatherData[i].weather[0].icon;
+    iconElement = document.querySelector(`#icon-${i}`);
+    iconElement.src = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";  
+  }
 }

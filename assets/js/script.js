@@ -1,15 +1,14 @@
 //API key for OpenWeatherMap
 const openWeatherKey = "d8b9c9f29acf75b9bc89cdc565bacf19";
 
-//"recentSearchesArray" will be used to store the city names that are searched for by the user
+//array to store the city names that are searched for by the user
 var recentSearchesArray = [];
 
 const recentSearchDropdown = document.querySelector("#recent-dropdown");
 
-//invoke function so that any recent searches stored in local storage populate the recent searches dropdown when page is loaded/refreshed
+//invoke so that recent searches are populated after page loads
 populateRecentSearchesDropdown();
 
-// Populate the "Recent Searches" dropdown menu with the names of cities that were searched for previously, in order of most recent to least recent search
 function populateRecentSearchesDropdown() {
   recentSearchDropdown.innerHTML = "<option>--Select a City--</option>";
   var recentSearchArray = getRecentSearches();
@@ -34,7 +33,6 @@ function getRecentSearches() {
 }
 
 //If the city name does not already exist in the array AND the length of the array reaches 10 items, remove the first (aka the oldest) item in the array and append the new item
-//Deliberately avoiding storing data that does not actually result in a successful API call (i.e. incorrectly spelled city names etc)
 function storeRecentSearches(cityName) {
   if (
     recentSearchesArray.includes(cityName) === false &&
@@ -64,14 +62,13 @@ async function displayWeatherReport(event) {
 
   //gets the city coordinates
   var locationData = await getCityLocation(cityName);
-
   var lat = locationData.coord.lat;
   var lon = locationData.coord.lon;
 
   //gets the current weather and forecast data
   var weatherForecast = await getWeatherForecast(lat, lon);
 
-  //TESTING
+  //TESTING DELETE LATER
   console.log("This is the weather forecast:", weatherForecast);
 
   //Display city name on page
@@ -79,11 +76,9 @@ async function displayWeatherReport(event) {
 
   //TO-DO: populate the weather icon somehow
 
-  //TO-DO: do something to convert the date and store in the array
-
   var currentWeatherData = weatherForecast.current;
 
-  currentDate = getCurrentDate(currentWeatherData); 
+  var currentDate = getDate(currentWeatherData);
 
   weatherDataItems = [
     currentDate,
@@ -94,18 +89,39 @@ async function displayWeatherReport(event) {
   ];
 
   //make a collection containing each of the spans inside the list items that need to be populated with the weather data
-  currentWeatherDataCollection = document.querySelector("#current-weather-list")
+  currentWeatherTextSpans = document.querySelector("#current-weather-list")
     .children;
 
   //populate current weather data
-  for (let i = 0; i < currentWeatherDataCollection.length; i++) {
-    const currentWeatherListItem =
-      currentWeatherDataCollection[i].firstElementChild;
-    console.log(currentWeatherListItem);
+  for (let i = 0; i < currentWeatherTextSpans.length; i++) {
+    const currentWeatherListItem = currentWeatherTextSpans[i].firstElementChild;
     currentWeatherListItem.textContent = weatherDataItems[i];
   }
 
-  //TO-DO: display the 5 day forecast
+  //Display 5 day forecast
+  const weeklyForecast = weatherForecast.daily;
+
+  for (let i = 1; i < 6; i++) {
+      const dailyWeatherList = document.querySelector(`#day-${i}`);
+
+      const forecastData = weeklyForecast[i];
+
+      var dailyForecastDate = getDate(forecastData);
+
+      weatherDataItems = [
+        dailyForecastDate,
+        forecastData.temp.day,
+        forecastData.humidity,
+        forecastData.wind_speed,
+      ];
+
+      dailyWeatherTextSpans = document.querySelector(`#day-${i}`).children;
+      for (let i = 0; i < dailyWeatherTextSpans.length; i++) {
+        const dailyWeatherListItem = dailyWeatherTextSpans[i].firstElementChild;
+        dailyWeatherListItem.textContent = weatherDataItems[i];
+      }
+    
+  }
 }
 
 //retrieves the city name entered by the user and sanitises it (make it lowercase as per API requirement, and get rid of any leading/trailing whitespace)
@@ -125,7 +141,7 @@ async function getCityLocation(cityName) {
 
   //fetch the data
   const cityLocationResponse = await fetch(locationQueryURL);
-  if (cityLocationResponse.status === 404) {
+  if (cityLocationResponse.status === 404 || cityLocationResponse.status === 400) {
     window.alert(
       "Location not found. Please ensure you are entering a valid location with correct spelling, and try again."
     );
@@ -154,27 +170,30 @@ async function getWeatherForecast(lat, lon) {
   return await weatherForecastResponse.json();
 }
 
-function getCurrentDate(currentWeatherData) {
-  const monthsArray = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
+//this array is used for date conversion
+const monthsArray = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
-  const rawDate = new Date(currentWeatherData.dt * 1000);
+//convert the date from unix format to a readable format
+function getDate(weatherDataObject) {
+  const rawDate = new Date(weatherDataObject.dt * 1000);
   const currentDateValue = rawDate.getDate();
   const currentMonthAsIndex = rawDate.getMonth();
   const currentMonthValue = monthsArray[currentMonthAsIndex];
   const currentYear = rawDate.getFullYear();
-  const currentDate = (`${currentDateValue} ` + `${currentMonthValue} ` + `${currentYear}`);
-  return currentDate;
+  const convertedDate =
+    `${currentDateValue} ` + `${currentMonthValue} ` + `${currentYear}`;
+  return convertedDate;
 }

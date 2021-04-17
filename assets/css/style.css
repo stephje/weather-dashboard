@@ -88,7 +88,7 @@ hr {
 ul {
     list-style: none;
     padding-inline-start: 0px;
-    margin: 0px;
+    margin: 8px;
 }
 
 li {
@@ -98,6 +98,8 @@ li {
 
 span {
     font-weight: normal;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 img {

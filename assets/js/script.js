@@ -101,11 +101,14 @@ async function displayWeatherReport(event) {
 
   //gets the current weather and forecast data
   var weatherForecast = await getWeatherForecast(lat, lon);
+  console.log(weatherForecast);
 
   //Display city name on page
   document.querySelector("#city-name").textContent = cityName.toUpperCase();
 
   var currentWeatherData = weatherForecast.current;
+
+  colourUVIndex(currentWeatherData);
 
   var currentDate = getDate(currentWeatherData);
 
@@ -229,6 +232,22 @@ function getDate(weatherData) {
   return convertedDate;
 }
 
+function colourUVIndex(currentWeatherData) {
+  var uvi = document.querySelector("#uv-index");
+  if (currentWeatherData.uvi <= 2) {
+    uvi.style.backgroundColor = "#ABF6B0";
+  } else if (currentWeatherData.uvi <= 5) {
+    uvi.style.backgroundColor = "#FFEC5C";
+  } else if (currentWeatherData.uvi <= 7) {
+    uvi.style.backgroundColor = "#FFB133";
+  } else if (currentWeatherData.uvi <= 10) {
+    uvi.style.backgroundColor = "#FF5C5C";
+  } else if (currentWeatherData.uvi >= 11) {
+    uvi.style.backgroundColor = "#DABBF2";
+  }
+}
+
+//display the weather icons on the page
 function getIcons(weatherData) {
   for (let i = 0; i < 6; i++) {
     weatherIcon = weatherData[i].weather[0].icon;

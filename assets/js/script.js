@@ -53,12 +53,46 @@ function storeRecentSearches(cityName) {
 const searchButton = document.querySelector("#search-button");
 searchButton.addEventListener("click", displayWeatherReport);
 
+const recentSearchesButton = document.querySelector("#recent-searches-button");
+recentSearchesButton.addEventListener("click", displayWeatherReport);
+
+// function getCityName() {
+//   var cityInput = document.querySelector("#city-input").value;
+//   cityInput = cityInput.toLowerCase().trim();
+//   return cityInput;
+// }
+
 //This function is invoked when the search button is clicked
 async function displayWeatherReport(event) {
   event.preventDefault();
 
-  //retrieves the user input
-  var cityName = getCityName();
+  var cityName = undefined;
+
+  if (
+    //if the search button is clicked on but there is no user input value, return (to prevent further execution of function)
+    //otherwise assign the value to cityInput and invoke sanitizeUserInput
+    event.target === searchButton ||
+    event.target === searchButton.firstElementChild
+  ) {
+    var cityInput = document.querySelector("#city-input").value;
+    if (!cityInput) {
+      return;
+    }
+    cityName = sanitizeUserInput(cityInput);
+  } else if (
+    //if the recent searches search button is clicked on but no option is selected, return (to prevent further execution of function)
+    //otherwise assign the value to cityInput and invoke sanitizeUserInput
+    event.target === recentSearchesButton ||
+    event.target === recentSearchesButton.firstElementChild
+  ) {
+    var dropdownMenu = document.getElementById("recent-dropdown");
+    if (dropdownMenu.length <= 1) {
+      return;
+    }
+    var selectedIndex = dropdownMenu.selectedIndex;
+    cityInput = document.getElementsByTagName("option")[selectedIndex].value;
+    cityName = sanitizeUserInput(cityInput);
+  }
 
   //gets the city coordinates
   var locationData = await getCityLocation(cityName);
@@ -92,7 +126,7 @@ async function displayWeatherReport(event) {
     const currentWeatherListItem = currentWeatherTextSpans[i].firstElementChild;
     currentWeatherListItem.textContent = weatherDataItems[i];
   }
-  
+
   //Display 5 day forecast
   const weeklyForecast = weatherForecast.daily;
 
@@ -100,30 +134,27 @@ async function displayWeatherReport(event) {
   getIcons(weeklyForecast);
 
   for (let i = 1; i < 6; i++) {
+    const forecastData = weeklyForecast[i];
 
-      const forecastData = weeklyForecast[i];
+    var dailyForecastDate = getDate(forecastData);
 
-      var dailyForecastDate = getDate(forecastData);
+    weatherDataItems = [
+      dailyForecastDate,
+      forecastData.temp.day,
+      forecastData.humidity,
+      forecastData.wind_speed,
+    ];
 
-      weatherDataItems = [
-        dailyForecastDate,
-        forecastData.temp.day,
-        forecastData.humidity,
-        forecastData.wind_speed,
-      ];
-
-      const dailyWeatherTextSpans = document.querySelector(`#day-${i}`).children;
-      for (let i = 0; i < dailyWeatherTextSpans.length; i++) {
-        const dailyWeatherListItem = dailyWeatherTextSpans[i].firstElementChild;
-        dailyWeatherListItem.textContent = weatherDataItems[i];
-      }
-    
+    const dailyWeatherTextSpans = document.querySelector(`#day-${i}`).children;
+    for (let i = 0; i < dailyWeatherTextSpans.length; i++) {
+      const dailyWeatherListItem = dailyWeatherTextSpans[i].firstElementChild;
+      dailyWeatherListItem.textContent = weatherDataItems[i];
+    }
   }
 }
 
 //retrieves the city name entered by the user and sanitises it (make it lowercase as per API requirement, and get rid of any leading/trailing whitespace)
-function getCityName() {
-  var cityInput = document.querySelector("#city-input").value;
+function sanitizeUserInput(cityInput) {
   cityInput = cityInput.toLowerCase().trim();
   return cityInput;
 }
@@ -138,7 +169,10 @@ async function getCityLocation(cityName) {
 
   //fetch the data
   const cityLocationResponse = await fetch(locationQueryURL);
-  if (cityLocationResponse.status === 404 || cityLocationResponse.status === 400) {
+  if (
+    cityLocationResponse.status === 404 ||
+    cityLocationResponse.status === 400
+  ) {
     window.alert(
       "Location not found. Please ensure you are entering a valid location with correct spelling, and try again."
     );
@@ -195,10 +229,11 @@ function getDate(weatherData) {
   return convertedDate;
 }
 
-function getIcons(weatherData){
+function getIcons(weatherData) {
   for (let i = 0; i < 6; i++) {
     weatherIcon = weatherData[i].weather[0].icon;
     iconElement = document.querySelector(`#icon-${i}`);
-    iconElement.src = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";  
+    iconElement.src =
+      "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
   }
 }

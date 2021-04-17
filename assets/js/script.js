@@ -111,7 +111,10 @@ async function displayWeatherReport(event) {
   //get date from unix value
   var currentDate = getDate(currentWeatherData);
 
-  document.querySelector("#current-date").textContent = currentDate;
+  //display current date
+  var currentDateHeader = document.querySelector("#current-date")
+  currentDateHeader.textContent = currentDate;
+  currentDateHeader.style.display = "block";
 
   //these are the values that are required for the current weather card
   weatherDataItems = [
@@ -146,6 +149,7 @@ async function displayWeatherReport(event) {
     //display date on weather cards
     const dateHeader = document.querySelector(`#date-${i}`);
     dateHeader.textContent = dailyForecastDate;
+    dateHeader.style.display = "block";
 
     weatherDataItems = [
       forecastData.temp.day,

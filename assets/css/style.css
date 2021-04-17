@@ -111,11 +111,23 @@ img {
     .weather-card {
         max-width: 45%;
     }
+
+    main {
+        margin: 2%;
+    }
+
+    hr {
+        width: 90%;
+    }
 }
 
 @media screen and (min-width: 768px){
     .weather-card {
         max-width: 29%;
+    }
+
+    hr {
+        width: 95%;
     }
 }
 

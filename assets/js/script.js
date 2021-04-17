@@ -56,12 +56,6 @@ searchButton.addEventListener("click", displayWeatherReport);
 const recentSearchesButton = document.querySelector("#recent-searches-button");
 recentSearchesButton.addEventListener("click", displayWeatherReport);
 
-// function getCityName() {
-//   var cityInput = document.querySelector("#city-input").value;
-//   cityInput = cityInput.toLowerCase().trim();
-//   return cityInput;
-// }
-
 //This function is invoked when the search button is clicked
 async function displayWeatherReport(event) {
   event.preventDefault();
@@ -101,7 +95,6 @@ async function displayWeatherReport(event) {
 
   //gets the current weather and forecast data
   var weatherForecast = await getWeatherForecast(lat, lon);
-  console.log(weatherForecast);
 
   //Display city name on page
   document.querySelector("#city-name").textContent = cityName.toUpperCase();

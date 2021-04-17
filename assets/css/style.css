@@ -76,6 +76,11 @@ h2 {
     text-align: center;
 }
 
+h3 {
+    text-align: center;
+    margin: 5px;
+}
+
 hr {
     width: 80%;
 }
@@ -88,6 +93,11 @@ ul {
 
 li {
     padding: 5px;
+    font-weight: bold;
+}
+
+span {
+    font-weight: normal;
 }
 
 

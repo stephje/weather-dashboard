@@ -71,9 +71,41 @@ async function displayWeatherReport(event) {
   //gets the current weather and forecast data
   var weatherForecast = await getWeatherForecast(lat, lon);
 
-  
   //TESTING
   console.log("This is the weather forecast:", weatherForecast);
+
+  //Display city name on page
+  document.querySelector("#city-name").textContent = cityName.toUpperCase();
+
+  //TO-DO: populate the weather icon somehow
+
+  //TO-DO: do something to convert the date and store in the array
+
+  var currentWeatherData = weatherForecast.current;
+
+  currentDate = getCurrentDate(currentWeatherData); 
+
+  weatherDataItems = [
+    currentDate,
+    currentWeatherData.temp,
+    currentWeatherData.humidity,
+    currentWeatherData.wind_speed,
+    currentWeatherData.uvi,
+  ];
+
+  //make a collection containing each of the spans inside the list items that need to be populated with the weather data
+  currentWeatherDataCollection = document.querySelector("#current-weather-list")
+    .children;
+
+  //populate current weather data
+  for (let i = 0; i < currentWeatherDataCollection.length; i++) {
+    const currentWeatherListItem =
+      currentWeatherDataCollection[i].firstElementChild;
+    console.log(currentWeatherListItem);
+    currentWeatherListItem.textContent = weatherDataItems[i];
+  }
+
+  //TO-DO: display the 5 day forecast
 }
 
 //retrieves the city name entered by the user and sanitises it (make it lowercase as per API requirement, and get rid of any leading/trailing whitespace)
@@ -97,7 +129,7 @@ async function getCityLocation(cityName) {
     window.alert(
       "Location not found. Please ensure you are entering a valid location with correct spelling, and try again."
     );
-  } else { 
+  } else {
     //store search results
     recentSearchesArray = getRecentSearches();
     storeRecentSearches(cityName);
@@ -120,4 +152,29 @@ async function getWeatherForecast(lat, lon) {
 
   const weatherForecastResponse = await fetch(forecastQueryURL);
   return await weatherForecastResponse.json();
+}
+
+function getCurrentDate(currentWeatherData) {
+  const monthsArray = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+  const rawDate = new Date(currentWeatherData.dt * 1000);
+  const currentDateValue = rawDate.getDate();
+  const currentMonthAsIndex = rawDate.getMonth();
+  const currentMonthValue = monthsArray[currentMonthAsIndex];
+  const currentYear = rawDate.getFullYear();
+  const currentDate = (`${currentDateValue} ` + `${currentMonthValue} ` + `${currentYear}`);
+  return currentDate;
 }

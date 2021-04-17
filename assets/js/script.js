@@ -111,9 +111,10 @@ async function displayWeatherReport(event) {
   //get date from unix value
   var currentDate = getDate(currentWeatherData);
 
+  document.querySelector("#current-date").textContent = currentDate;
+
   //these are the values that are required for the current weather card
   weatherDataItems = [
-    currentDate,
     currentWeatherData.temp,
     currentWeatherData.humidity,
     currentWeatherData.wind_speed,
@@ -142,13 +143,17 @@ async function displayWeatherReport(event) {
     //get daily forecast date from unix value
     var dailyForecastDate = getDate(forecastData);
 
+    //display date on weather cards
+    const dateHeader = document.querySelector(`#date-${i}`);
+    dateHeader.textContent = dailyForecastDate;
+
     weatherDataItems = [
-      dailyForecastDate,
       forecastData.temp.day,
       forecastData.humidity,
       forecastData.wind_speed,
     ];
 
+    //display weather data on weather cards
     const dailyWeatherTextSpans = document.querySelector(`#day-${i}`).children;
     for (let i = 0; i < dailyWeatherTextSpans.length; i++) {
       const dailyWeatherListItem = dailyWeatherTextSpans[i].firstElementChild;
@@ -265,7 +270,7 @@ function getDate(weatherData) {
   const currentMonthValue = monthsArray[currentMonthAsIndex];
   const currentYear = rawDate.getFullYear();
   const convertedDate =
-    `${currentDayValue} ` +
+    `${currentDayValue}, ` +
     `${currentDateValue} ` +
     `${currentMonthValue} ` +
     `${currentYear}`;

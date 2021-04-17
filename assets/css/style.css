@@ -81,6 +81,12 @@ h3 {
     margin: 5px;
 }
 
+h4 {
+    text-align: center;
+    margin: 5px;
+    padding: 2px;
+}
+
 hr {
     width: 80%;
 }
